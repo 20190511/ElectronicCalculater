@@ -9,8 +9,6 @@ def calcum_cal(r_list: list):
         simense += 1/item
 
     total_sum = 1/simense
-    print(r_list, end=" : ")
-    print(round(total_sum, 3))
     return total_sum
 
 def calcumR():
@@ -28,14 +26,52 @@ def serial_volt():
     for i, r_ in enumerate(regit):
         regit[i] = r_ / total_regit * volt
 
-    print(list, end=" : ")
-    print(regit)
 
 def sum_volt():
     e = list(map(float, input("[전압들...] >> ").split()))
     print(sum(e))
 
+def cal_express(express: str):
+    plus_list = express.split("+")
+    total_sum = 0
+    for e_plus in plus_list:
+        if not "||" in e_plus:
+            total_sum += float(e_plus.strip())
+            continue
+        var_list = e_plus.split("||")
+        for i, e in enumerate(var_list):
+            var_list[i] = float(e.strip())
+        total_sum += calcum_cal(var_list)
+    print(express + " : " + str(total_sum))
+    return total_sum
+
+def bracket_splitter(express:str):
+    stack = []
+    br_open = 0
+    br_close = 0
+
+    tmp_str = ""
+    for ch in express:
+        if "(" == ch:
+            br_open += 1
+        elif ")" == ch:
+            br_close += 1
+            tmp_str = str(cal_express(tmp_str))
+        else:
+            tmp_str += ch
+
+    stack.append(tmp_str)
+    if br_open != br_close:
+        print("Your Express is wrong")
+        return []
+    else:
+        return round(cal_express(stack[0]),3)
+
 if __name__ == "__main__":
+    s = input("식 : ")
+    print(bracket_splitter(s))
+
+    '''
     while(1):
         s = input("식 : ")
         plus_list = s.split("+")
@@ -49,16 +85,4 @@ if __name__ == "__main__":
                 var_list[i] = float(e.strip())
             total_sum += calcum_cal(var_list)
         print(total_sum)
-
-    '''
-    while(1):
-        check = int(input("1:병렬계산, 2:직렬전압계산, 3:+ >> "))
-        if check == 1:
-            calcumR()
-        elif check == 2:
-            serial_volt()
-        elif check == 3:
-            sum_volt()
-        else:
-            break
     '''

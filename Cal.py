@@ -51,12 +51,21 @@ def bracket_splitter(express:str):
     br_close = 0
 
     tmp_str = ""
+    total_line = ""
     for ch in express:
         if "(" == ch:
+            if len(tmp_str) != 0:
+                stack.append(tmp_str)
+                tmp_str = ""
             br_open += 1
         elif ")" == ch:
+            print(tmp_str)
+            if len(stack) != 0:
+                tmp_str = stack.pop() + str(cal_express(tmp_str))
+            elif tmp_str != "":
+                total_line += str(cal_express(tmp_str))
+            tmp_str = ""
             br_close += 1
-            tmp_str = str(cal_express(tmp_str))
         else:
             tmp_str += ch
 
@@ -65,24 +74,11 @@ def bracket_splitter(express:str):
         print("Your Express is wrong")
         return []
     else:
-        return round(cal_express(stack[0]),3)
+        if tmp_str == "":
+            return total_line
+        else:
+            return round(cal_express(stack[0]), 3)
 
 if __name__ == "__main__":
     s = input("식 : ")
     print(bracket_splitter(s))
-
-    '''
-    while(1):
-        s = input("식 : ")
-        plus_list = s.split("+")
-        total_sum = 0
-        for e_plus in plus_list:
-            if not "||" in e_plus:
-                total_sum += float(e_plus.strip())
-                continue
-            var_list = e_plus.split("||")
-            for i, e in enumerate(var_list):
-                var_list[i] = float(e.strip())
-            total_sum += calcum_cal(var_list)
-        print(total_sum)
-    '''

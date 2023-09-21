@@ -64,8 +64,9 @@ def bracket_splitter(express:str):
                 tmp_str = stack.pop() + str(cal_express(tmp_str))
             elif tmp_str != "":
                 total_line += str(cal_express(tmp_str))
-            tmp_str = ""
             br_close += 1
+            if br_open == br_close:
+                tmp_str = ""
         else:
             tmp_str += ch
 
